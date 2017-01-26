@@ -4,45 +4,46 @@ import bodyParser from 'body-parser'
 import { handleMessage } from './bot.js'
 import { receivedPostback } from './bot.js'
 
-function sendThreadSettings(messageData) {
-  return new Promise((resolve, reject) => {
-   console.log('Passing')
-    request({
-      uri: 'https://graph.facebook.com/v2.6/me/thread_settings',
-      qs: { access_token: config.pageAccessToken },
-      method: 'POST',
-      json: messageData,
-    }, (error, response) => {
-      if (!error && response.statusCode === 200) {
-        console.log('Thread settings set correctly')
-        resolve()
-      } else {
-        console.log('ERROR')
-        reject(error)
+
+function setMenu(){
+console.log('setting menu...')
+var request = require('request');
+ return new Promise((resolve, reject) => {
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+    qs: {access_token: config.pageAccessToken},
+    method: 'POST',
+    json:{
+        setting_type : "call_to_actions",
+        thread_state : "existing_thread",
+        call_to_actions:[
+            {
+              type:"postback",
+              title:"Help",
+              payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
+            },
+            {
+              type:"postback",
+              title:"Say hello",
+              payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
+            },
+            {
+              type:"web_url",
+              title:"View Website",
+              url:"https://google.com/"
+            }
+          ]
+    }
+  }, function(error, response, body) {
+      console.log('menu set successfully')
+       //console.log(response)
+      if (error) {
+        console.log('Error sending messages: ', error)
+      } else if (response.body.error) {
+        console.log('Error: ', response.body.error)
       }
     })
   })
-}
-
-
-function setMenu(){
-  const menuData = {
-    setting_type : "call_to_actions",
-    thread_state : "existing_thread",
-    call_to_actions:[
-      {
-        type:"postback",
-        title:"Help",
-        payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
-      },
-      {
-        type:"postback",
-        title:"Hello world",
-        payload:"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
-      }
-    ]
-  }
-  sendThreadSettings(menuData)
 }
 
 

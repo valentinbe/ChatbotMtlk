@@ -130,6 +130,32 @@ function replyButton(recipientId, option) {
 
 
 //custom 
+function replyCallButton(recipientId, option) {
+  const messageData = {
+    recipient: {
+      id: recipientId,
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'generic',
+          elements: [{
+            title: option.message,
+            buttons: [{
+              type:option.type,
+              title:option.title,
+              payload:option.payload
+            }],
+          }],
+        },
+      },
+    },
+  }
+  sendMessage(messageData)
+}
+
+
 function receivedPostback(event) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -151,6 +177,7 @@ function receivedPostback(event) {
 module.exports = {
   replyMessage,
   replyButton,
+  replyCallButton,
   getUserInfo
 }
 

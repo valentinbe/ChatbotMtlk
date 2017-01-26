@@ -108,11 +108,3 @@ app.listen(app.get('port'), () => {
 })
 
 
-
-
-
-
-/*
-"type":"phone_number",
-          "title":"Call Representative",
-          "payload":"+33676395561"*/

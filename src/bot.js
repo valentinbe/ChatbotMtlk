@@ -1,4 +1,4 @@
-import { replyMessage, replyButton, getUserInfo } from './facebook.js'
+import { replyMessage, replyButton, replyCallButton, getUserInfo } from './facebook.js'
 import config from './../config.js'
 import { Client } from 'recastai'
 
@@ -80,7 +80,14 @@ function receivedPostback(event) {
 
   switch(payload){
     case 'DEVELOPER_DEFINED_PAYLOAD_FOR_HELP':
-      replyMessage(senderID, "You asked for help but i dont care...");
+      //replyMessage(senderID, "You asked for help...");
+      const options = {
+          message:"Ask for help to our representative",
+          type:"phone_number",
+          title:"Call",
+          payload:"+33676395561"
+        }
+        replyCallButton(senderID, options)        /* to reply a button */
       break;
     default:
       replyMessage(senderID, "Unknown Postback called");
